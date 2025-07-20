@@ -1,0 +1,34 @@
+# Chapter 3
+ - 형식 문자열
+	- 문자열을 정의할 때는 2바이트 문자열을 지원하는 TEXT 매크로 사용
+	- FString 클래스로 선언된 변수에서 문자열 정보를 얻어오려면 **반드시 \* 연산자**를 앞에 지정해야 함
+		- 언리얼 엔진만의 독특한 방식
+		- FString::Printf(TEXT("Actor Name : %s"), *GetName());
+ - 이벤트 함수
+	- 액터에 속한 모든 컴포넌트의 세팅이 완료되면 PostInitializeCompnents 호출
+	- **게임 시작 => PostInitializeCompnents => BeginPlay => 매 프레임마다 Tick => EndPlay**
+ - Tick 함수
+	- 프레임 단위로 동작
+	- 렌더링 프레임은 불규칙하게 동작하기 때문에 DeltaSeconds 값도 불규칙한 값이 전달
+	- 정보 은닉을 하기 위해 변수를 private 로 선언하면 컴파일 과정에서 에러 발생
+	- AllowPrivateAccess 사용하면 에디터에서는 이를 편집함과 동시에 은닉이 가능하여 캡슐화 가능
+ - UPROPERTY
+	- 해당 매크로 구문 내에서 사용하는 값들은 C++ 문법이 아닌 언리얼에서 지정한 문법
+	- Unreal Header Tool 로 분석하여 generated 라는 이름의 추가 코드를 생성
+	- 이 코드는 Intermediate 폴더에 저장되는데 헤더 파일의 내용이 변경될 때마다 자동 생성되어 덮어 씀
+ - FVector
+	- Pitch : Y축 회전
+	- Yaw : Z축 회전
+	- Roll : X축 회전
+ - 시간 관리
+	- 언리얼 엔진에서 시간을 관리하는 주체는 월드
+	- TimeManager 로 다양한 시간 값들을 얻을 수 있다
+	- GetWorld()->GetTimeSeconds()
+	- Tick 함수가 아닌 프레임 시간을 가져오고자 할 때 사용
+ - 무브먼트 컴포넌트 활용
+	- 움직임이라는 요소를 액터와 별도로 관리하도록 프레임워크를 구성
+	- 이를 활용하면 Tick 함수에 구현하지 않아도 움직이게 할 수 있다
+		- FloatingPawnMovement : 중력의 영향을 받지 않는 액터의 움직임
+		- RotatingMovement
+		- InterpMovement : 지정한 위치로 액터를 이동
+		- ProjectileMovement : 중력의 영향을 받아 포물선을 그리는 발사체의 움직임

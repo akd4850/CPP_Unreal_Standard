@@ -7,12 +7,13 @@
 AFountain::AFountain()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BODY"));
 	Water = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WATER"));
 	Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("LIGHT"));
 	Splash = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("SPLASH"));
+	Movement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("MOVEMENT"));
 
 	// Body 를 루트 컴포넌트로 지정하고 Water 를 자식으로
 	RootComponent = Body;
@@ -46,6 +47,9 @@ AFountain::AFountain()
 	if (PS_SPLASH.Succeeded()) {
 		Splash->SetTemplate(PS_SPLASH.Object);
 	}
+
+	RotateSpeed = 30.0f;
+	Movement->RotationRate = FRotator(0.0f, RotateSpeed, 0.0f);
 }
 
 // Called when the game starts or when spawned
@@ -53,6 +57,10 @@ void AFountain::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	ABLOG_S(Warning);
+	ABLOG(Warning, TEXT("Actor Name : %s, ID : %d, Location X : %.3f"), *GetName(), ID, GetActorLocation().X);
+
+	//RotateSpeed = 30.0f;
 }
 
 // Called every frame
@@ -60,5 +68,23 @@ void AFountain::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//AddActorLocalRotation(FRotator(0.0f, RotateSpeed * DeltaTime, 0.0f));
 }
 
+void  AFountain::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	ABLOG_S(Warning);
+
+	/*// 경과 시간
+	float getTimeSeconds = GetWorld()->GetTimeSeconds();
+	ABLOG(Warning, TEXT("GetWorld()->GetTimeSeconds() : %f"), getTimeSeconds);*/
+	/*//사용자가 게임을 중지한 시간을 제외한 경과 시간
+	GetWorld()->GetUnpausedTimeSeconds();*/
+}
+
+void AFountain::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	ABLOG_S(Warning);
+}
