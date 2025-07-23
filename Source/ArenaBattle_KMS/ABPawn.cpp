@@ -47,6 +47,12 @@ void AABPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Mesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	UAnimationAsset* AnimAsset = LoadObject<UAnimationAsset>(nullptr, TEXT("/Game/Book/Animations/WarriorRun.WarriorRun"));
+	if (AnimAsset != nullptr) 
+	{
+		Mesh->PlayAnimation(AnimAsset, true);
+	}
 }
 
 // Called every frame
@@ -61,6 +67,8 @@ void AABPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AABPawn::UpDown);
+	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &AABPawn::LeftRight);
 }
 
 void AABPawn::PostInitializeComponents()
@@ -73,4 +81,16 @@ void AABPawn::PossessedBy(AController* NewController)
 {
 	ABLOG_S(Warning);
 	Super::PossessedBy(NewController);
+}
+
+void AABPawn::UpDown(float NewAxixValue)
+{
+	//ABLOG(Warning, TEXT("%f"), NewAxixValue);
+	AddMovementInput(GetActorForwardVector(), NewAxixValue);
+}
+
+void AABPawn::LeftRight(float NewAxixValue)
+{
+	//ABLOG(Warning, TEXT("%f"), NewAxixValue);
+	AddMovementInput(GetActorRightVector(), NewAxixValue);
 }

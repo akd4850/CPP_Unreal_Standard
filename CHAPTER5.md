@@ -21,3 +21,12 @@
 			- 이 무브먼트는 중력을 고려하지 않는다
 		- SpringArm : 3인칭 시점으로 카메라 구도를 편리하게 설정할 수 있는 부가 컴포넌트
 		- Camera : 카메라->SpringArm 자식으로 설정하고 트랜스폼 초기화하면 카메라는 자동으로 스프링암 끝에 걸림
+	- 조작
+		- 프로젝트 셋팅 >> 입력
+			- Axis Mappings : 조이스틱 레버 신호 설정. -1 ~ 1 값 발생
+			- Action Mappings : 조이스틱 버튼 신호
+		- InputComponent를 사용해 폰의 멤버 함수와 입력 설정을 Binding
+		- AddMovementInput 에 GetActorForwardVector, GetActorRightVector 로 액터의 방향 전달
+		- 폰을 조종하기 위한 로직은 폰 클래스에 구현하는 것이 일반적
+		- 하지만 언리얼 엔진의 입력 시스템은 중간에 플레이어 컨트롤러를 거쳐서 폰에 전달
+		- 만약 플레이어 컨트롤러에 입력을 처리하면 폰에 전달되지 않는다
