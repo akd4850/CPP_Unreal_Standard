@@ -40,6 +40,14 @@ AABPawn::AABPawn()
 	{
 		Mesh->SetSkeletalMesh(SK_CARDBOARD.Object);
 	}
+
+	Mesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Book/Animations/WarriorAnimBlueprint"));
+	if (WARRIOR_ANIM.Succeeded())
+	{
+		Mesh->SetAnimInstanceClass(WARRIOR_ANIM.Class);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -47,12 +55,12 @@ void AABPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Mesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	/*Mesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 	UAnimationAsset* AnimAsset = LoadObject<UAnimationAsset>(nullptr, TEXT("/Game/Book/Animations/WarriorRun.WarriorRun"));
 	if (AnimAsset != nullptr) 
 	{
 		Mesh->PlayAnimation(AnimAsset, true);
-	}
+	}*/
 }
 
 // Called every frame
